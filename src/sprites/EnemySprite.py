@@ -11,8 +11,8 @@ class Enemy(pygame.sprite.Sprite):
                        (ASSETS_DIR+type_emoji+'.png').convert_alpha(),
                        (MEASURE_UNIT_SIZE, MEASURE_UNIT_SIZE)))
         self.rect = self.image.get_rect(midtop= (x,y))
+        self.going_left = False
 
     def die(self):
         self.kill()
 
-    # def move(self):

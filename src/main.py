@@ -4,7 +4,7 @@ import pygame
 
 import config
 from config import FPS, HEIGHT, WIDTH, BLACK
-from enemy_factory import render_enemies, update_enemies
+from enemy_factory import update_enemies, render_enemies
 from sprites.Player import Player
 
 pygame.init()
@@ -34,7 +34,7 @@ while True:
     render_enemies(screen)
     player.draw(screen)
     player.update()
-    update_enemies()
+    update_enemies(screen)
 
 
 

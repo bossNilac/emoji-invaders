@@ -6,15 +6,16 @@ from config import ASSETS_DIR
 
 
 class Bullet(Sprite):
-    def __init__(self,Player):
+    def __init__(self,player):
         pygame.sprite.Sprite.__init__(self)
         self.image = (pygame.transform.scale
                   (pygame.image.load
                    (ASSETS_DIR + 'bullet.png').convert_alpha(), (10, 10)))
         self.rect = self.image.get_rect()
-        self.player_rect = Player.rect
-        self.start_x = Player.rect.midtop[0]
-        self.start_y = Player.rect.midtop[1]
+        self.player_rect = player.rect
+        self.start_x = player.rect.midtop[0]
+        self.start_y = player.rect.midtop[1]
+        self.player = player
         self.y = self.start_y
 
     def draw(self,surface):
@@ -25,11 +26,12 @@ class Bullet(Sprite):
         self.rect.midtop = (self.start_x, self.y)
 
     def check_collision(self):
-        for enemy in enemy_factory.enemies:
-            if self.rect.colliderect(enemy.rect):
-                enemy.die()
-                self.kill()
-                break
+        hits = pygame.sprite.spritecollide(self, enemy_factory.ALL_ENEMIES, False)
+
+        if hits:
+            enemy = hits[0]
+            enemy.die()
+            self.kill()
 
     def update(self):
         self.move()
