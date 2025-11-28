@@ -1,15 +1,17 @@
 import pygame
 
-from config import ASSETS_DIR, SHOOTING_DELAY
+from config import ASSETS_DIR, SHOOTING_DELAY, MEASURE_UNIT_SIZE
 from sprites.Bullet import Bullet
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,surface):
+
         pygame.sprite.Sprite.__init__(self)
         self.image = (pygame.transform.scale
                       (pygame.image.load
-                       (ASSETS_DIR+'rocket.png').convert_alpha(),(50, 50)))
+                       (ASSETS_DIR+'rocket.png').convert_alpha(),
+                       (MEASURE_UNIT_SIZE, MEASURE_UNIT_SIZE)))
         self.rect = self.image.get_rect(midtop= (50,550))
         self.rocket_x = 50
         self.bullets = pygame.sprite.Group()

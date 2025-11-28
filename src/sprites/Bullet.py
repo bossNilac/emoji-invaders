@@ -28,6 +28,8 @@ class Bullet(Sprite):
         for enemy in enemy_factory.enemies:
             if self.rect.colliderect(enemy.rect):
                 enemy.die()
+                self.kill()
+                break
 
     def update(self):
         self.move()
