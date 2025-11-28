@@ -2,14 +2,19 @@ from sys import exit
 
 import pygame
 
+import config
+from config import FPS, HEIGHT, WIDTH, BLACK
+from enemy_factory import render_hard_enemies, update_hard_enemies
 from sprites.Player import Player
 
 pygame.init()
 
 
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Emoji Invaders")
+icon= pygame.image.load(config.ASSETS_DIR + 'rocket.png').convert()
+pygame.display.set_icon(icon)
 
 clock = pygame.time.Clock()
 
@@ -17,9 +22,6 @@ player = pygame.sprite.GroupSingle()
 
 player.add(Player(screen))
 
-angry_emoji = pygame.image.load('assets/angry.png').convert_alpha()
-angry_emoji = pygame.transform.scale(angry_emoji,(50,50))
-angry_rect = angry_emoji.get_rect(midtop= (770,550))
 
 
 while True:
@@ -28,15 +30,13 @@ while True:
             pygame.quit()
             exit()
 
-
-
-    screen.fill((0,0,0))
-    screen.blit(angry_emoji,angry_rect)
+    screen.fill(BLACK)
+    render_hard_enemies(screen)
     player.draw(screen)
     player.update()
-
+    update_hard_enemies()
 
 
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(FPS)

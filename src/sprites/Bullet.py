@@ -1,12 +1,13 @@
 import pygame
 from pygame.sprite import Sprite
 
+import enemy_factory
 from config import ASSETS_DIR
 
 
 class Bullet(Sprite):
     def __init__(self,Player):
-        super(Bullet,self).__init__()
+        pygame.sprite.Sprite.__init__(self)
         self.image = (pygame.transform.scale
                   (pygame.image.load
                    (ASSETS_DIR + 'bullet.png').convert_alpha(), (10, 10)))
@@ -23,5 +24,11 @@ class Bullet(Sprite):
         self.y -= 10
         self.rect.midtop = (self.start_x, self.y)
 
+    def check_collision(self):
+        for enemy in enemy_factory.enemies:
+            if self.rect.colliderect(enemy.rect):
+                enemy.die()
+
     def update(self):
         self.move()
+        self.check_collision()
