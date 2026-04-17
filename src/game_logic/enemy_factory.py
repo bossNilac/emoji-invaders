@@ -1,5 +1,3 @@
-from operator import index
-
 import pygame
 
 from config import MEASURE_UNIT_SPACE, MEASURE_UNIT_SIZE, WIDTH, ENEMY_MOVE_SPEED
@@ -77,20 +75,20 @@ def render_enemies(screen):
         _clear_all_enemies()
 
         start_y = 0
-        start_x = 125
+        start_x = 0
         for _ in range(10):
             start_x += MEASURE_UNIT_SPACE
             add_hard_enemy(start_x, start_y)
 
         for _ in range(2):
-            start_x = 125
+            start_x = 0
             start_y += MEASURE_UNIT_SIZE
             for _ in range(10):
                 start_x += MEASURE_UNIT_SPACE
                 add_medium_enemy(start_x, start_y)
 
         for _ in range(2):
-            start_x = 125
+            start_x = 0
             start_y += MEASURE_UNIT_SIZE
             for _ in range(10):
                 start_x += MEASURE_UNIT_SPACE
@@ -112,7 +110,6 @@ def switch_direction():
 
 
 def switch_row_all():
-    """Move the entire formation down by one row."""
     for row in ENEMY_ROWS:
         for enemy in row.sprites():
             enemy.rect.y += MEASURE_UNIT_SIZE
@@ -127,20 +124,16 @@ def update_enemies(screen):
 
     edge_hit = False
 
-    # 1) Move all enemies horizontally
     for row in ENEMY_ROWS:
         for enemy in row.sprites():
             move(enemy)
-            # Detect if any enemy hits the edge
             if enemy.rect.left <= 0 or enemy.rect.right >= WIDTH:
                 edge_hit = True
 
-    # 2) If any enemy hit the edge: reverse direction + move whole block down
     if edge_hit:
         switch_direction()
         switch_row_all()
 
-    # 3) Respawn when all are dead
     if all(not row.sprites() for row in ENEMY_ROWS):
         rendered = False
         render_enemies(screen)

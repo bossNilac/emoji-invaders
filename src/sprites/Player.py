@@ -1,5 +1,6 @@
 import pygame
 
+from game_logic import enemy_factory
 from config import ASSETS_DIR, SHOOTING_DELAY, MEASURE_UNIT_SIZE
 from sprites.Bullet import Bullet
 
@@ -40,9 +41,19 @@ class Player(pygame.sprite.Sprite):
         self.bullets.add(Bullet(self))
         self.start_tick = pygame.time.get_ticks()
 
+    def check_collisions(self):
+        for bullet in self.bullets.sprites():
+            if bullet.rect.colliderect(self.rect):
+                bullet.kill()
+                self.kill()
+        for enemy in enemy_factory.ALL_ENEMIES.sprites():
+            if enemy.rect.colliderect(self.rect):
+                self.kill()
+
     def update(self):
         self.move()
         self.bullets.update()
+        self.check_collisions()
         self.bullets.draw(self.surface)
 
 

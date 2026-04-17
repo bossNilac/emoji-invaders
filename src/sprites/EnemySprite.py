@@ -4,7 +4,7 @@ from config import ASSETS_DIR, MEASURE_UNIT_SIZE
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self,x,y,type_emoji):
+    def __init__(self,x,y,type_emoji,score=0):
         super().__init__()
         self.image = (pygame.transform.scale
                       (pygame.image.load
@@ -12,6 +12,7 @@ class Enemy(pygame.sprite.Sprite):
                        (MEASURE_UNIT_SIZE, MEASURE_UNIT_SIZE)))
         self.rect = self.image.get_rect(midtop= (x,y))
         self.going_left = False
+        self.score = score
 
     def die(self):
         self.kill()

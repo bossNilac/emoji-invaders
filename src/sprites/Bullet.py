@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
-import enemy_factory
+from game_logic import enemy_factory
 from config import ASSETS_DIR
 
 

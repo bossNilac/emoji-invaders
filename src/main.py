@@ -4,12 +4,10 @@ import pygame
 
 import config
 from config import FPS, HEIGHT, WIDTH, BLACK
-from enemy_factory import update_enemies, render_enemies
+from game_logic.enemy_factory import update_enemies, render_enemies
 from sprites.Player import Player
 
 pygame.init()
-
-
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Emoji Invaders")
