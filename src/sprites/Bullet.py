@@ -36,6 +36,13 @@ class Bullet(Sprite):
             self.rect.midbottom = (self.start_x, self.y)
 
     def check_collision(self):
+        shield_hits = pygame.sprite.spritecollide(self, enemy_factory.ALL_SHIELDS, False)
+        if shield_hits:
+            shield = shield_hits[0]
+            shield.kill()
+            self.kill()
+            return
+
         hits = pygame.sprite.spritecollide(self, enemy_factory.ALL_ENEMIES, False)
         if hits and not self.is_from_enemy:
             enemy = hits[0]

@@ -22,6 +22,7 @@ class Score:
 
     def reset(self):
         self.score = 0
+        self._render_text()
 
 
 global_score = None

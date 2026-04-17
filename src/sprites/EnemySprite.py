@@ -11,6 +11,8 @@ from sprites.player import total_enemies_killed
 
 
 def shoot_probability(i):
+    if i == 4:
+        return 1
     p_max = 0.1
     p = 2
     return p_max * (i / 3) ** p
@@ -25,7 +27,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midtop= (x,y))
         self.going_left = False
         self.score = score
-        self.shoot_tick = 0
+        self.shoot_tick = pygame.time.get_ticks()
         self.importance = importance
         self.shooter = random.random() < shoot_probability(importance)
         if self.shooter:
