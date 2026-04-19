@@ -6,7 +6,7 @@ Emoji Invaders is an arcade shooter inspired by classic Space Invaders gameplay.
 
 ## Gameplay
 
-<video src="https://github.com/user-attachments/assets/..." controls></video>
+<video src="https://github.com/bossNilac/emoji-invaders/blob/main/docs/space-invaders.mp4" controls></video>
 
 This should be a short, sped-up gameplay preview that shows the flow of a full round, enemy patterns, power-up drops, and a boss wave.
 
