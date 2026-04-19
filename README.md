@@ -1,14 +1,9 @@
 # Emoji Invaders
 
 ## Overview
+<img width="400" height="300" alt="Screenshot 2026-04-19 234607" src="https://github.com/user-attachments/assets/51b34213-8e6f-4295-82bb-2e04edbfc484" />
 
 Emoji Invaders is an arcade shooter inspired by classic Space Invaders gameplay. The project recreates the core loop of moving enemy waves, player shooting, and escalating pressure, while adding modern features such as power-ups, boss fights, audio feedback, persistent high scores, and difficulty scaling.
-
-## Gameplay
-
-<video src="https://github.com/bossNilac/emoji-invaders/blob/main/docs/space-invaders.mp4"></video>
-
-This should be a short, sped-up gameplay preview that shows the flow of a full round, enemy patterns, power-up drops, and a boss wave.
 
 ## Features
 
@@ -84,6 +79,13 @@ src/
     ├── Shield.py
     └── PowerUp.py
 ```
+
+## Gameplay
+<a href="https://youtu.be/vK_rg5kbpc0">
+  <img src="https://img.youtube.com/vi/vK_rg5kbpc0/maxresdefault.jpg" width="400" height="300">
+</a>
+This should be a short, sped-up gameplay preview that shows the flow of a full round, enemy patterns, power-up drops, and a boss wave.
+
 
 ## What I Learned
 
