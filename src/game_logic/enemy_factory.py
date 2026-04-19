@@ -50,25 +50,21 @@ def _add_enemy_to_row(enemy, row_group):
 
 
 def add_ufo_enemy(x, y):
-    print("Added Ufo enemy")
     enemy = Ufo_Enemy(x, y)
     _add_enemy_to_row(enemy, ufo_row)
 
 
 def add_boss_enemy(x, y):
-    print("Added Boss enemy")
     enemy = BossSprite(x, y)
     _add_enemy_to_row(enemy, boss_row)
 
 
 def add_hard_enemy(x, y):
-    print("Added Hard enemy")
     enemy = HardEnemy(x, y)
     _add_enemy_to_row(enemy, enemies_row_5)
 
 
 def add_medium_enemy(x, y):
-    print("Added Medium enemy")
     enemy = MediumEnemy(x, y)
 
     if len(enemies_row_4.sprites()) >= 10:
@@ -78,7 +74,6 @@ def add_medium_enemy(x, y):
 
 
 def add_easy_enemy(x, y):
-    print("Added Easy enemy")
     enemy = EasyEnemy(x, y)
 
     if len(enemies_row_2.sprites()) >= 10:
@@ -93,7 +88,6 @@ def draw_enemies(screen):
 
 
 def add_shield(x, y):
-    print("Added Shield")
     shield = Shield(x, y)
     shields.add(shield)
     ALL_SHIELDS.add(shield)
@@ -104,7 +98,6 @@ def draw_shields(screen):
 
 
 def add_power_up(power_up_type, x, y):
-    print("Added Power Up")
     power_up = PowerUp(power_up_type, current_player_group, x, y)
     power_ups.add(power_up)
     ALL_POWER_UPS.add(power_up)
@@ -219,7 +212,7 @@ def move(enemy):
 
 def get_enemy_speed(enemies_left):
     progress = 1 - (enemies_left / TOTAL_ENEMIES_COUNT)
-    return ENEMY_MOVE_SPEED + (progress ** 2) * 2.0
+    return ENEMY_MOVE_SPEED + (progress ** 2) * 0.8
 
 def switch_direction():
     global going_left

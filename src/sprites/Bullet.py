@@ -51,9 +51,11 @@ class Bullet(Sprite):
 
         if isinstance(self.player,GroupSingle) and self.player.sprite is not None:
             if self.is_from_enemy & self.rect.colliderect(self.player.sprite.rect):
-                print(self.player)
-                self.player.sprite.kill()
-                pygame.event.post(pygame.event.Event(pygame.NOEVENT))
+                if hasattr(self.player.sprite, "die"):
+                    self.player.sprite.die()
+                else:
+                    self.player.sprite.kill()
+                    pygame.event.post(pygame.event.Event(pygame.NOEVENT))
 
     def update(self):
         self.move()

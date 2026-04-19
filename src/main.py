@@ -7,6 +7,7 @@ pygame.init()
 import config
 import game_logic.score as score_module
 from config import FPS, HEIGHT, WIDTH, BLACK, WHITE, read_high_score, store_high_score
+from game_logic.audio_factory import audio_loop
 from game_logic.enemy_factory import update_enemies, render_enemies, on_game_reset
 from sprites.player import Player
 
@@ -49,6 +50,7 @@ def main_loop():
                 sys.exit()
 
         screen.blit(BG, (0, 0))
+        audio_loop()
         score_module.render_score(screen)
         render_enemies(screen)
         player.draw(screen)
@@ -57,7 +59,7 @@ def main_loop():
         try:
             pygame.display.update()
         except pygame.error:
-            print("Game Over")
+            pass
         clock.tick(FPS)
 
 def start_menu():
@@ -77,17 +79,13 @@ def start_menu():
             quit_button = pygame.Rect(0, 380, 140, 50)
             quit_button.centerx = WIDTH // 2
 
-            high_score_box = pygame.Rect(0, 450, high_score_text.get_width() + 50, 50)
-            high_score_box.centerx = WIDTH // 2
-
             pygame.draw.rect(screen, WHITE, play_button)
             pygame.draw.rect(screen, WHITE, quit_button)
-            pygame.draw.rect(screen, BLACK, high_score_box)
 
             screen.blit(play_text, play_text.get_rect(center=play_button.center))
             screen.blit(quit_text, quit_text.get_rect(center=quit_button.center))
             screen.blit(game_name, game_name.get_rect(center=(WIDTH // 2, 250)))
-            screen.blit(high_score_text, high_score_text.get_rect(center=high_score_box.center))
+            screen.blit(high_score_text, high_score_text.get_rect(center=(WIDTH // 2, 475)))
 
             for event in pygame.event.get():
 

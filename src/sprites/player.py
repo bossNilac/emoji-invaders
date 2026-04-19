@@ -1,6 +1,7 @@
 import pygame
 
 from game_logic import enemy_factory
+from game_logic.audio_factory import player_die_sound, shooting_sound
 from config import ASSETS_DIR, SHOOTING_DELAY, MEASURE_UNIT_SIZE
 from sprites.Bullet import Bullet
 
@@ -44,6 +45,7 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self):
         self.bullets.add(Bullet(False,player=self))
+        shooting_sound()
         self.start_tick = pygame.time.get_ticks()
 
     def get_shooting_delay(self):
@@ -69,8 +71,12 @@ class Player(pygame.sprite.Sprite):
     def check_collisions(self):
         for enemy in enemy_factory.ALL_ENEMIES.sprites():
             if enemy.rect.colliderect(self.rect):
-                self.kill()
-                pygame.event.post(pygame.event.Event(pygame.NOEVENT))
+                self.die()
+
+    def die(self):
+        player_die_sound()
+        self.kill()
+        pygame.event.post(pygame.event.Event(pygame.NOEVENT))
 
     def update(self):
         self.move()

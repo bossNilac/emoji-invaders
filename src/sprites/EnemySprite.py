@@ -3,6 +3,7 @@ import random
 import pygame
 
 from config import ASSETS_DIR, MEASURE_UNIT_SIZE, SHOOTING_DELAY
+from game_logic.audio_factory import npc_die_sound
 import game_logic.score as score_module
 from sprites import player
 from sprites.Bullet import Bullet
@@ -32,13 +33,12 @@ class Enemy(pygame.sprite.Sprite):
         self.shooter = random.random() < shoot_probability(importance)
         if self.shooter:
             self.bullet = None
-        if self.shooter:
-            print('object: ',self)
 
     def die(self):
         from game_logic import enemy_factory
 
         enemy_factory.try_spawn_power_up_from_enemy(self)
+        npc_die_sound()
         self.kill()
         score_module.update_score(self.score)
         player.total_enemies_killed += 1
