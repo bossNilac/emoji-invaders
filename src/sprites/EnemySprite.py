@@ -37,9 +37,8 @@ class Enemy(pygame.sprite.Sprite):
 
     def die(self):
         self.kill()
-        if score_module.global_score is not None:
-            score_module.global_score.update_score(self.score)
-            player.total_enemies_killed += 1
+        score_module.update_score(self.score)
+        player.total_enemies_killed += 1
 
 
 

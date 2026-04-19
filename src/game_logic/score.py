@@ -3,26 +3,36 @@ import config
 import pygame
 
 
-class Score:
-    def __init__(self, score):
-        self.font = pygame.font.Font("freesansbold.ttf", 32)
-        self.score = score
-        self._render_text()
+font = None
+_global_score = 0
+text_rect = None
+text = None
 
-    def _render_text(self):
-        self.text = self.font.render(f"Score: {self.score}", True, config.WHITE)
-        self.text_rect = self.text.get_rect(center=(config.SCORE_X, config.SCORE_Y))
+def init():
+    global font
+    font = pygame.font.Font("freesansbold.ttf", 32)
+    _render_text()
 
-    def render_score(self, screen):
-        screen.blit(self.text, self.text_rect)
+def _render_text():
+    global text, text_rect, font
+    if font is None:
+        return
+    text = font.render(f"Score: {_global_score}", True, config.WHITE)
+    text_rect = text.get_rect(center=(config.SCORE_X, config.SCORE_Y))
 
-    def update_score(self, score):
-        self.score += score
-        self._render_text()
+def render_score(screen):
+    if text is not None and text_rect is not None:
+        screen.blit(text, text_rect)
 
-    def reset(self):
-        self.score = 0
-        self._render_text()
+def get_score():
+    return _global_score
 
+def update_score(score):
+    global _global_score
+    _global_score += score
+    _render_text()
 
-global_score = None
+def reset():
+    global _global_score
+    _global_score = 0
+    _render_text()

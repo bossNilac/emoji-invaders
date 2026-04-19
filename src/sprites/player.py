@@ -46,6 +46,7 @@ class Player(pygame.sprite.Sprite):
         for enemy in enemy_factory.ALL_ENEMIES.sprites():
             if enemy.rect.colliderect(self.rect):
                 self.kill()
+                pygame.event.post(pygame.event.Event(pygame.NOEVENT))
 
     def update(self):
         self.move()

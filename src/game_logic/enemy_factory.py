@@ -100,6 +100,11 @@ def _clear_all_shields():
     ALL_SHIELDS.empty()
 
 
+def get_random_shield_positions():
+    possible_positions = list(range(100, WIDTH - 100, MEASURE_UNIT_SPACE * 2))
+    return sorted(random.sample(possible_positions, 4))
+
+
 def render_enemies(screen):
     global rendered
 
@@ -132,7 +137,7 @@ def render_enemies(screen):
                 add_easy_enemy(start_x, start_y)
 
         shield_y = 550 - MEASURE_UNIT_SIZE
-        for shield_x in [150, 300, 500, 650]:
+        for shield_x in get_random_shield_positions():
             add_shield(shield_x, shield_y)
 
         rendered = True
