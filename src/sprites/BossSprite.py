@@ -20,6 +20,7 @@ class BossSprite(Enemy):
         self.move_right = True
         self.shake_until = 0
         self.shake_strength = 8
+        self.shots_fired = 0
 
     def move(self):
         if self.move_right:
@@ -44,6 +45,11 @@ class BossSprite(Enemy):
         if self.shooter and not self.bullet:
             if now - self.shoot_tick > SHOOTING_DELAY / (self.importance * 4 * ((total_enemies_killed//2) + 1)):
                 self.bullet = Bullet(True, p, self.rect.centerx, self.rect.bottom)
+                self.shots_fired += 1
+                if self.shots_fired % 5 == 0:
+                    from game_logic import enemy_factory
+
+                    enemy_factory.spawn_random_power_up(self.rect.centerx, self.rect.bottom)
                 self.shoot_tick = pygame.time.get_ticks()
                 return True
         return False

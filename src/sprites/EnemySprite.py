@@ -36,6 +36,9 @@ class Enemy(pygame.sprite.Sprite):
             print('object: ',self)
 
     def die(self):
+        from game_logic import enemy_factory
+
+        enemy_factory.try_spawn_power_up_from_enemy(self)
         self.kill()
         score_module.update_score(self.score)
         player.total_enemies_killed += 1
@@ -45,7 +48,8 @@ class Enemy(pygame.sprite.Sprite):
     def shoot_back(self,p):
         now = pygame.time.get_ticks()
         if self.shooter and not self.bullet :
-                if now - self.shoot_tick > SHOOTING_DELAY / (self.importance * ((total_enemies_killed//2) +1)):
+                effective_delay = (SHOOTING_DELAY * max(1, 5 - self.importance)) / ((total_enemies_killed // 10) + 1)
+                if now - self.shoot_tick > effective_delay:
                     self.bullet = Bullet(True,p,self.rect.centerx,self.rect.bottom)
                     self.shoot_tick = pygame.time.get_ticks()
                     return True

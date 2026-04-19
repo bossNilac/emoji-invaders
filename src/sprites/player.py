@@ -20,16 +20,20 @@ class Player(pygame.sprite.Sprite):
         self.surface = surface
         self.start_tick = pygame.time.get_ticks()
         self.current_tick = pygame.time.get_ticks()
+        self.move_speed = 5
+        self.bolt_until = 0
+        self.fast_until = 0
 
     def move(self):
+        self.update_power_ups()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.rocket_x -= 5
+            self.rocket_x -= self.move_speed
         if keys[pygame.K_d]:
-            self.rocket_x += 5
+            self.rocket_x += self.move_speed
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
-            if now - self.start_tick > SHOOTING_DELAY:
+            if now - self.start_tick > self.get_shooting_delay():
                 self.shoot()
 
         if self.rocket_x > 800:
@@ -41,6 +45,26 @@ class Player(pygame.sprite.Sprite):
     def shoot(self):
         self.bullets.add(Bullet(False,player=self))
         self.start_tick = pygame.time.get_ticks()
+
+    def get_shooting_delay(self):
+        if pygame.time.get_ticks() < self.bolt_until:
+            return SHOOTING_DELAY / 4
+        return SHOOTING_DELAY
+
+    def update_power_ups(self):
+        if pygame.time.get_ticks() < self.fast_until:
+            self.move_speed = 10
+        else:
+            self.move_speed = 5
+
+    def apply_power_up(self, power_up_type):
+        now = pygame.time.get_ticks()
+        if power_up_type == "bolt":
+            self.bolt_until = now + 5000
+        elif power_up_type == "fast":
+            self.fast_until = now + 5000
+        elif power_up_type == "shield":
+            enemy_factory.respawn_shields()
 
     def check_collisions(self):
         for enemy in enemy_factory.ALL_ENEMIES.sprites():

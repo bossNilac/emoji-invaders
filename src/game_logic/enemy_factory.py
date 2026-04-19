@@ -8,6 +8,7 @@ from sprites import player
 from sprites.Easy_Enemy import EasyEnemy
 from sprites.Hard_Enemy import HardEnemy
 from sprites.Medium_Enemy import MediumEnemy
+from sprites.PowerUp import PowerUp
 from sprites.Shield import Shield
 from sprites.Ufo_Enemy import Ufo_Enemy
 
@@ -19,6 +20,7 @@ enemies_row_3 = pygame.sprite.Group()
 enemies_row_2 = pygame.sprite.Group()
 enemies_row_1 = pygame.sprite.Group()
 shields = pygame.sprite.Group()
+power_ups = pygame.sprite.Group()
 
 ENEMY_ROWS = [
     boss_row,
@@ -32,6 +34,7 @@ ENEMY_ROWS = [
 
 ALL_ENEMIES = pygame.sprite.Group()
 ALL_SHIELDS = pygame.sprite.Group()
+ALL_POWER_UPS = pygame.sprite.Group()
 
 
 rendered = False
@@ -39,6 +42,7 @@ going_left = False
 ufo_going_left = bool(random.randint(0, 1))
 ufo_move_tick = 0
 round_count = 0
+current_player_group = None
 
 def _add_enemy_to_row(enemy, row_group):
     row_group.add(enemy)
@@ -99,6 +103,17 @@ def draw_shields(screen):
     shields.draw(screen)
 
 
+def add_power_up(power_up_type, x, y):
+    print("Added Power Up")
+    power_up = PowerUp(power_up_type, current_player_group, x, y)
+    power_ups.add(power_up)
+    ALL_POWER_UPS.add(power_up)
+
+
+def draw_power_ups(screen):
+    power_ups.draw(screen)
+
+
 def _clear_all_enemies():
     for row in ENEMY_ROWS:
         row.empty()
@@ -110,9 +125,40 @@ def _clear_all_shields():
     ALL_SHIELDS.empty()
 
 
+def _clear_all_power_ups():
+    power_ups.empty()
+    ALL_POWER_UPS.empty()
+
+
 def get_random_shield_positions():
     possible_positions = list(range(100, WIDTH - 100, MEASURE_UNIT_SPACE * 2))
     return sorted(random.sample(possible_positions, 4))
+
+
+def respawn_shields():
+    _clear_all_shields()
+    shield_y = 550 - MEASURE_UNIT_SIZE
+    for shield_x in get_random_shield_positions():
+        add_shield(shield_x, shield_y)
+
+
+def spawn_random_power_up(x, y):
+    if current_player_group is None:
+        return
+    add_power_up(random.choice(["bolt", "fast", "shield"]), x, y)
+
+
+def try_spawn_power_up_from_enemy(enemy):
+    if enemy.__class__.__name__ == "BossSprite":
+        return
+
+    if enemy.__class__.__name__ == "Ufo_Enemy":
+        drop_chance = 0.33
+    else:
+        drop_chance = random.uniform(0.05, 0.10)
+
+    if random.random() < drop_chance:
+        spawn_random_power_up(enemy.rect.centerx, enemy.rect.bottom)
 
 
 def render_enemies(screen):
@@ -123,6 +169,7 @@ def render_enemies(screen):
         round_count += 1
         _clear_all_enemies()
         _clear_all_shields()
+        _clear_all_power_ups()
 
         start_y = 30
         is_boss_round = round_count % 3 == 0
@@ -161,6 +208,7 @@ def render_enemies(screen):
 
     draw_enemies(screen)
     draw_shields(screen)
+    draw_power_ups(screen)
 
 def move(enemy):
     speed = get_enemy_speed(50 - player.total_enemies_killed % 50)
@@ -219,6 +267,8 @@ def move_boss():
 
 def update_enemies(p,screen):
     global rendered
+    global current_player_group
+    current_player_group = p
 
     if not rendered:
         render_enemies(screen)
@@ -236,6 +286,7 @@ def update_enemies(p,screen):
 
     move_ufo()
     move_boss()
+    power_ups.update()
 
     if edge_hit:
         switch_direction()
@@ -249,8 +300,11 @@ def update_enemies(p,screen):
 def on_game_reset():
     _clear_all_enemies()
     _clear_all_shields()
+    _clear_all_power_ups()
     global rendered
     global round_count
+    global current_player_group
     rendered = False
     round_count = 0
+    current_player_group = None
     player.total_enemies_killed = 0
