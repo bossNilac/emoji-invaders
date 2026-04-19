@@ -26,7 +26,7 @@ def init_audio():
     shoot = mixer.Sound(ASSETS_DIR + 'shoot.wav')
 
     mixer.Channel(1).set_volume(0.5)
-    mixer.Channel(2).set_volume(0.25)
+    mixer.Channel(2).set_volume(0.1)
 
     _initialized = True
 
